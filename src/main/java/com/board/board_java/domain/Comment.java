@@ -18,7 +18,7 @@ import java.util.Objects;
         @Index(columnList = "createDate")
 })
 @Entity
-public class Comment {
+public class Comment extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +26,10 @@ public class Comment {
     @Setter @ManyToOne(optional = false) private Article article;
     @Setter @Column(nullable = false, length = 200) private String comment;
 
-    @CreatedBy @Column(nullable = false, length = 50) private String createId;
-    @CreatedDate @Column(nullable = false) private LocalDateTime createDate;
-    @LastModifiedBy @Column(nullable = false, length = 50) private String updateId;
-    @LastModifiedDate @Column(nullable = false) private LocalDateTime updateDate;
+    // @CreatedBy @Column(nullable = false, length = 50) private String createId;
+    // @CreatedDate @Column(nullable = false) private LocalDateTime createDate;
+    // @LastModifiedBy @Column(nullable = false, length = 50) private String updateId;
+    // @LastModifiedDate @Column(nullable = false) private LocalDateTime updateDate;
 
     protected Comment() {}
 
