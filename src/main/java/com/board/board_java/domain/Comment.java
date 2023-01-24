@@ -1,5 +1,6 @@
 package com.board.board_java.domain;
 
+import com.querydsl.core.types.EntityPath;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
