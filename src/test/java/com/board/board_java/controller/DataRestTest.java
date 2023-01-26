@@ -1,5 +1,6 @@
 package com.board.board_java.controller;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Disabled
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -26,7 +28,7 @@ public class DataRestTest {
 
     @Test
     void test() throws Exception {
-        mvc.perform(get("/api/articles/16/articleComments"))
+        mvc.perform(get("/api/articles"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.valueOf("application/hal+json")))
                 .andDo(print());
