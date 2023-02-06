@@ -46,7 +46,7 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew clean build -x test
         
-      - run: ls ./build/
+      - run: ls ./build/libs/
       
       # docker build 수행
       - name: Set up docker buildx
