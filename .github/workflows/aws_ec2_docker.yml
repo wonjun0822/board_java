@@ -46,15 +46,7 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew clean build -x test
 
-      - name: Copy Jar file
-        run: mv build/libs/$(ls build/libs) build/libs/board_java.jar
-
       - uses: actions/upload-artifact@master
-        with:
-          name: jar-file
-          path: build/libs/board_java.jar
-          
-      - uses: actions/download-artifact@master
         with:
           name: jar-file
           path: build/libs/board_java.jar
@@ -65,6 +57,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.ACCESS_TOKEN }}
+                    
+      - uses: actions/download-artifact@master
+        with:
+          name: jar-file
+          path: build/libs/board_java.jar
           
       - name: Extract Docker metadata
         id: meta
