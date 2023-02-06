@@ -52,16 +52,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.ACCESS_TOKEN }}
         
-#       - name: Build and push Docker Image
-#         id: build-and-push
-#         uses: docker/build-push-action@v3
-#         with:
-#           push: true
-#           file: ./Dockerfile
-#           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
-#           labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and push Docker Image
+        id: build-and-push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          dockerfile: ./
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          labels: ${{ steps.meta.outputs.labels }}
           
-      - name: docker build and push
-        run: | 
-          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+#       - name: docker build and push
+#         run: | 
+#           docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+#           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
