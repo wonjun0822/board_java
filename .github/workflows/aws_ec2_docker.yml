@@ -47,8 +47,11 @@ jobs:
         run: ./gradlew clean build -x test
         
       - run: ls ./build/libs/
-      - run: java -Djarmode=layertools -jar ./build/libs/board_java.jar extract
-      - run: ls ./build/libs/
+      
+      - run: COPY ./build/libs/*.jar app.jar
+      - run: java -Djarmode=layertools -jar app.jar extract
+      - run: ls ./
+      
 #       - name: Login to ghcr
 #         uses: docker/login-action@v1
 #         with:
