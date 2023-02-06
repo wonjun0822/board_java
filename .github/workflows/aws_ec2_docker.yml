@@ -45,7 +45,8 @@ jobs:
       # test를 제외한 프로젝트 빌드
       - name: Build With Gradle
         run: ./gradlew clean build -x test
-
+        
+      - run: ls /build/libs/
       - run: java -Djarmode=layertools -jar /build/libs/board_java.jar extract
       - run: ls /build/libs/
 #       - name: Login to ghcr
