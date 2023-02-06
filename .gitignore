@@ -7,7 +7,7 @@
 
 ### JPA Buddy
 .jpb/
-application/
+
 ### Querydsl
 /src/main/generated
 
