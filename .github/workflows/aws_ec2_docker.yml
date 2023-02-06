@@ -29,6 +29,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin' # jdk를 제공하는 vender사 이름 ex. zulu, adopt, microsoft
           
+      # gradlew 권한 추가
+      - name: Grant Execute Permission For Gradlew
+        run: chmod +x gradlew
+        
       - name: Publish to GitHub Packages
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
