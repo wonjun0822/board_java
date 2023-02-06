@@ -45,4 +45,9 @@ jobs:
       # test를 제외한 프로젝트 빌드
       - name: Build With Gradle
         run: ./gradlew clean build -x test
+        
+      # docker build 수행
+      - name: Set up docker buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
       
