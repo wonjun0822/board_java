@@ -48,9 +48,9 @@ jobs:
         
       - run: ls ./build/libs/
       
-      - run: COPY ./build/libs/*.jar app.jar
-      - run: java -Djarmode=layertools -jar app.jar extract
-      - run: ls ./
+      - run: cd ./build/libs/
+      - run: java -Djarmode=layertools -jar board_java.jar extract
+      - run: ls ./build/libs/
       
 #       - name: Login to ghcr
 #         uses: docker/login-action@v1
