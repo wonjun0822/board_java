@@ -57,6 +57,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
+          file: ./Dockerfile
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
           
