@@ -45,7 +45,7 @@ jobs:
       # test를 제외한 프로젝트 빌드
       - name: Build With Gradle
         run: ./gradlew clean build -x test
-
+        
       - name: Login to ghcr
         uses: docker/login-action@v1
         with:
@@ -54,5 +54,5 @@ jobs:
           password: ${{ secrets.ACCESS_TOKEN }}
 
       - name: docker build
-        run: docker build -t ghcr.io/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
       
