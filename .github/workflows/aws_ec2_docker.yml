@@ -6,9 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/board_java
+  IMAGE_NAME: board_java
   IMAGE_TAG: 1.0.${{ github.run_number }}
-  NAME: board_java
 
 permissions: write-all
 
