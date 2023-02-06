@@ -48,6 +48,13 @@ jobs:
         
       - run: ls ./build/libs/
       
+      - name: Temporarily save build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: build
+          retention-days: 1
+          
       # docker build 수행
       - name: Set up docker buildx
         id: buildx
@@ -66,7 +73,12 @@ jobs:
         uses: docker/metadata-action@v1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: build
+          
       - name: Build and push Docker Image
         id: build-and-push
         uses: docker/build-push-action@v3
