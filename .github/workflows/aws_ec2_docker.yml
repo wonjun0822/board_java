@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/board_java
+  IMAGE_NAME: ${{ github.repository }}
   IMAGE_TAG: 1.0.${{ github.run_number }}
 
 permissions: write-all
@@ -60,8 +60,3 @@ jobs:
           context: ./
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
-          
-#       - name: docker build and push
-#         run: | 
-#           docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
-#           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
