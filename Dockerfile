@@ -1,7 +1,7 @@
 FROM openjdk:17-alpine as builder
 WORKDIR application
-ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
+#ARG JAR_FILE=build/libs/*.jar
+COPY ./build/libs/*.jar app.jar
 RUN java -Djarmode=layertools -jar /application/app.jar extract
 
 FROM openjdk:17-alpine
