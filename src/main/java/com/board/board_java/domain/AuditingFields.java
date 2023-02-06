@@ -18,22 +18,22 @@ import java.time.LocalDateTime;
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-public class AuditingFields {
+public abstract class AuditingFields {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedBy
     @Column(nullable = false, length = 50, updatable = false)
-    private String createId;
+    private String createBy;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createAt;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @LastModifiedBy
     @Column(nullable = false, length = 50)
-    private String updateId;
+    private String updateBy;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private LocalDateTime updateDate;
+    private LocalDateTime updateAt;
 }

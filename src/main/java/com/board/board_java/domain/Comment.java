@@ -12,8 +12,8 @@ import java.util.Objects;
 @ToString
 @Table(indexes = {
         @Index(columnList = "comment"),
-        @Index(columnList = "createId"),
-        @Index(columnList = "createDate")
+        @Index(columnList = "createBy"),
+        @Index(columnList = "createAt")
 })
 @Entity
 public class Comment extends AuditingFields {
