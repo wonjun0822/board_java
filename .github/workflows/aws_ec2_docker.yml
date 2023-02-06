@@ -8,7 +8,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   IMAGE_TAG: 1.0.${{ github.run_number }}
-
+  NAME: board_java
+  
 permissions: write-all
 
 # 빌드 Job
@@ -45,6 +46,7 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew clean build -x test
         
+      # github container Login
       - name: Login to ghcr
         uses: docker/login-action@v2
         with:
@@ -52,11 +54,30 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.ACCESS_TOKEN }}
         
+      # github Container에 Docker build 후 이미지 push
+      # *.jar file no such file or directory 오류 나올 시 context 경로 재 확인
       - name: Build and push Docker Image
         id: build-and-push
         uses: docker/build-push-action@v3
         with:
           push: true
-          context: ./
+          context: ./ 
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
+          
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [ self-hosted ]
+    steps:
+      - name: Login to ghcr
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.ACCESS_TOKEN }}
+      - name: Docker run
+        run: |
+          sudo chmod 666 /var/run/docker.sock
+          docker stop ${{ env.NAME }} && docker rm ${{ env.NAME }}
+          docker run -d -p 8000:8080 ---name ${{ env.NAME }} --restart always ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
