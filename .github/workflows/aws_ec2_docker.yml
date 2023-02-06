@@ -54,5 +54,5 @@ jobs:
           password: ${{ secrets.ACCESS_TOKEN }}
 
       - name: docker build
-        run: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
       
