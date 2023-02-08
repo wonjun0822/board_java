@@ -1,18 +1,19 @@
 package com.board.board_java.Service;
 
 import com.board.board_java.domain.type.SearchType;
-import com.board.board_java.dto.ArticleDto;
-import com.board.board_java.dto.ArticleWithCommentsDto;
+import com.board.board_java.dto.Article.ArticleDetailDto;
+import com.board.board_java.dto.Article.ArticleDto;
 import com.board.board_java.repository.ArticleRepository;
+
 import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,8 +38,8 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleWithCommentsDto getArticle(long id) {
-        return articleRepository.findById(id).map(ArticleWithCommentsDto::from).orElseThrow(() -> new EntityNotFoundException("존재하는 게시글이 없습니다."));
+    public ArticleDetailDto getArticle(long id) {
+        return articleRepository.findById(id).map(ArticleDetailDto::from).orElseThrow(() -> new EntityNotFoundException("존재하는 게시글이 없습니다."));
     }
 
     public void saveArticle(ArticleDto dto) {

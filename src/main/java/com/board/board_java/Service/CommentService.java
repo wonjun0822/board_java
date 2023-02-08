@@ -1,12 +1,10 @@
 package com.board.board_java.Service;
 
-import com.board.board_java.domain.type.SearchType;
-import com.board.board_java.dto.ArticleDto;
-import com.board.board_java.dto.CommentDto;
+import com.board.board_java.dto.Article.ArticleDto;
+import com.board.board_java.dto.Comment.CommentDto;
 import com.board.board_java.repository.ArticleRepository;
 import com.board.board_java.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

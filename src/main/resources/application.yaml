@@ -36,15 +36,22 @@ spring:
     init:
       mode: always
 
-  data:
-    rest:
-      base-path: /api
-      detection-strategy: annotated
-
   server.http2.enable: true
 
-  thymeleaf3:
-    decoupled-logic: true
+springdoc:
+  enable-data-rest: false
+  swagger-ui:
+    version: 1.0
+
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+#    groups-order: DESC
+#    operationsSorter: method
+#    disable-swagger-default-url: true
+#    display-request-duration: true
+#  api-docs:
+#    path: /api-docs
 
 jwt:
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa # Token 암복호화 키

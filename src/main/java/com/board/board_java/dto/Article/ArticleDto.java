@@ -1,4 +1,4 @@
-package com.board.board_java.dto;
+package com.board.board_java.dto.Article;
 
 import com.board.board_java.domain.Article;
 

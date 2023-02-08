@@ -1,6 +1,7 @@
-package com.board.board_java.dto;
+package com.board.board_java.dto.Article;
 
 import com.board.board_java.domain.Article;
+import com.board.board_java.dto.ArticleWithCommentsDto;
 import com.board.board_java.dto.Comment.CommentDto;
 
 import java.util.LinkedHashSet;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * A DTO for the {@link com.board.board_java.domain.Article} entity
  */
-public record ArticleWithCommentsDto (
+public record ArticleDetailDto (
         Long id,
         String title,
         String content,
@@ -18,12 +19,12 @@ public record ArticleWithCommentsDto (
         String hashTag,
         Set<CommentDto> commentDto
 ) {
-    public static ArticleWithCommentsDto of(Long id, String title, String content, int viewCount, String hashTag, Set<CommentDto> commentDto) {
-        return new ArticleWithCommentsDto(id, title, content, viewCount, hashTag, commentDto);
+    public static ArticleDetailDto of (Long id, String title, String content, int viewCount, String hashTag, Set<CommentDto> commentDto) {
+        return new ArticleDetailDto (id, title, content, viewCount, hashTag, commentDto);
     }
 
-    public static ArticleWithCommentsDto from(Article entity) {
-        return new ArticleWithCommentsDto (
+    public static ArticleDetailDto from (Article entity) {
+        return new ArticleDetailDto (
                 entity.getId(),
                 entity.getTitle(),
                 entity.getContent(),
