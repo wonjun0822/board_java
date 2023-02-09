@@ -38,16 +38,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       
-      - name: make application.yml
-        run: |
-          cd ./src/main/resources
-          touch ./application.yml
-          echo "${{ secrets.APPLICATION }}" > ./application.yml
-          
-      - uses: actions/upload-artifact@v3
+      - uses: actions/checkout@v2
+      - run: touch ./src/main/resources/application.properties
+      - run: echo "${{secrets.APPLICATION}}" > ./src/main/resources/application.properties
+      - uses: actions/upload-artifact@v2
         with:
-          name: application.yml
-          path: ./src/main/resources/application.yml
+          name: application.properties
+          path: ./src/main/resources/application.properties
         
       - run: ls ./src/main/resources
       
