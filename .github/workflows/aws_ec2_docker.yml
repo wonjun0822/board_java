@@ -27,7 +27,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin' # jdk를 제공하는 vender사 이름 ex. zulu, adopt, microsoft
       
-      - run: touch ./src/main/resources/application.properties
+      - uses: actions/checkout@v3
+      - run: touch ./src/main/resources/application.yaml
       - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yaml
       - run: cat ./src/main/resources/application.yaml
     
