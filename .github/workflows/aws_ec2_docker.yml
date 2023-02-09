@@ -38,16 +38,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       
-      - uses: actions/checkout@v3
-      - run: touch ./src/main/resources/application.yaml
-      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yaml
-      # - run: cat ./src/main/resources/application.yaml
-      
-      - uses: actions/upload-artifact@v2
-        with:
-          name: application.yaml
-          path: ./src/main/resources/application.yaml
-      
+      - name: make application.yaml
+        run: |
+          cd ./src/main/resources
+          touch ./application.yaml
+          echo "${{ secrets.APPLICATION }}" > ./application.yaml
+        shell: bash
+        
       # gradlew 권한 추가
       - name: Grant Execute Permission For Gradlew
         run: chmod +x gradlew
