@@ -32,10 +32,43 @@ jobs:
       - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
       - run: cat ./src/main/resources/application.properties
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+# 그래들 캐싱 - 속도 향상 효과
+      - name: Gradle Caching
+        uses: actions/cache@v3
         with:
-          arguments: build
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      
+      - name: make application.yaml
+        run: |
+          cd ./src/main/resources
+          touch ./application.yaml
+          echo "${{ secrets.APPLICATION }}" > ./application.yaml
+          
+      - uses: actions/upload-artifact@v3
+        with:
+          name: application.yaml
+          path: ./src/main/resources/application.yaml
+        
+      - run: ls ./src/main/resources
+      
+      # gradlew 권한 추가
+      - name: Grant Execute Permission For Gradlew
+        run: chmod +x gradlew
+    
+      # test를 제외한 프로젝트 빌드
+      - name: Build With Gradle
+        run: ./gradlew clean build -x test
+        
+      - name: Cleanup Gradle Cache
+        if: ${{ always() }}
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
         
       # github container Login
       - name: Login to ghcr
