@@ -1,4 +1,4 @@
-name: aws_ec2_docker to Springboot
+name: aws_ec2_docker to SpringBoot
 
 on:
   push:
