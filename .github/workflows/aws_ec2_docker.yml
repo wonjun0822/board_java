@@ -45,6 +45,8 @@ jobs:
           echo "${{ secrets.APPLICATION }}" > ./application.yaml
         shell: bash
         
+      - run: ls ./src/main/resources
+      
       # gradlew 권한 추가
       - name: Grant Execute Permission For Gradlew
         run: chmod +x gradlew
