@@ -1,10 +1,15 @@
 package com.board.board_java.Service;
 
+import com.board.board_java.domain.Article;
+import com.board.board_java.domain.Member;
 import com.board.board_java.domain.type.SearchType;
 import com.board.board_java.dto.Article.ArticleDetailDto;
 import com.board.board_java.dto.Article.ArticleDto;
+import com.board.board_java.dto.Article.ArticleWriteDto;
+import com.board.board_java.dto.Security.LoginMemberDto;
 import com.board.board_java.repository.ArticleRepository;
 
+import com.board.board_java.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 public class ArticleService {
+    private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
@@ -42,33 +48,57 @@ public class ArticleService {
         return articleRepository.findById(id).map(ArticleDetailDto::from).orElseThrow(() -> new EntityNotFoundException("존재하는 게시글이 없습니다."));
     }
 
-    public void saveArticle(ArticleDto dto) {
-        articleRepository.save(dto.toEntity());
+    public ArticleDetailDto saveArticle(ArticleWriteDto articleWriteDto, LoginMemberDto loginMemberDto) {
+        Member member = memberRepository.getReferenceById(loginMemberDto.getUsername());
+
+        Article article = articleWriteDto.toEntity(member);
+
+        articleRepository.save(article);
+
+        return ArticleDetailDto.from(article);
     }
 
-    public void updateArticle(ArticleDto dto) {
+    public ArticleDetailDto updateArticle(Long articleId, ArticleWriteDto articleWriteDto, LoginMemberDto loginMemberDto) {
         try {
-            var article = articleRepository.getReferenceById(dto.id());
+            var article = articleRepository.getReferenceById(articleId);
+            var member = memberRepository.getReferenceById(loginMemberDto.getUsername());
 
-            if (dto.title() != null) {
-                article.setTitle(dto.title());
+            if (article.getMember().equals(member)) {
+                if (articleWriteDto.title() != null) {
+                    article.setTitle(articleWriteDto.title());
+                }
+
+                if (articleWriteDto.content() != null) {
+                    article.setContent(articleWriteDto.content());
+                }
+
+                articleRepository.save(article);
+
+                return ArticleDetailDto.from(article);
             }
 
-            if (dto.content() != null) {
-                article.setContent(dto.content());
+            else {
+                return ArticleDetailDto.from(article);
             }
+        } catch (EntityNotFoundException e) {
+            log.warn("게시글 업데이트 실패. 게시글을 수정하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
+        }
 
-            article.setHashTag(dto.hashTag());
+        return null;
+    }
 
-            articleRepository.save(article);
+    public void deleteArticle(Long articleId, LoginMemberDto loginMemberDto) {
+        try {
+            var article = articleRepository.getReferenceById(articleId);
+            var member = memberRepository.getReferenceById(loginMemberDto.getUsername());
+
+            if (article.getMember().equals(member)) {
+                articleRepository.deleteById(articleId);
+            }
         }
 
         catch (EntityNotFoundException e) {
-            log.warn("게시글 업데이트 실패. 게시글을 찾을 수 없습니다.");
+            log.warn("게시글 삭제 실패. 게시글을 삭제하는데 필요한 정보를 찾을 수 없습니다 - {}", e.getLocalizedMessage());
         }
-    }
-
-    public void deleteArticle(long id) {
-        articleRepository.deleteById(id);
     }
 }

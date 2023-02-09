@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -35,6 +34,11 @@ public class Article {
     @Setter @Column(nullable = false, columnDefinition = "int default 0") private int viewCount;
     @Setter @Column(length = 100) private String hashTag;
 
+    @Setter
+    @JoinColumn(name = "createBy", referencedColumnName = "memberId", nullable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Member member;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -54,22 +58,17 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<Comment> articleComments = new LinkedHashSet<>();
 
-    @Setter
-    @JoinColumn(name = "createBy", referencedColumnName = "memberId", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT), nullable = false)
-    @ManyToOne(optional = false)
-    private Member member;
-
     protected Article() {}
 
-    private Article(String title, String content, int viewCount, String hashTag) {
+    private Article(String title, String content, int viewCount, Member member) {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
-        this.hashTag = hashTag;
+        this.member = member;
     }
 
-    public static Article of(String title, String content, int viewCount, String hashTag) {
-        return new Article(title, content, viewCount, hashTag);
+    public static Article of(String title, String content, int viewCount, Member member) {
+        return new Article(title, content, viewCount, member);
     }
 
     @Override

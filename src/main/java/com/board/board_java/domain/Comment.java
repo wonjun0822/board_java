@@ -5,7 +5,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -16,7 +21,7 @@ import java.util.Objects;
         @Index(columnList = "createAt")
 })
 @Entity
-public class Comment extends AuditingFields {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +29,24 @@ public class Comment extends AuditingFields {
     @Setter @ManyToOne(optional = false) private Article article;
     @Setter @Column(nullable = false, length = 200) private String comment;
 
-    // @CreatedBy @Column(nullable = false, length = 50) private String createId;
-    // @CreatedDate @Column(nullable = false) private LocalDateTime createDate;
-    // @LastModifiedBy @Column(nullable = false, length = 50) private String updateId;
-    // @LastModifiedDate @Column(nullable = false) private LocalDateTime updateDate;
+    @Setter
+    @JoinColumn(name = "createBy", referencedColumnName = "memberId", nullable = false, updatable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Member member;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createAt;
+
+    @LastModifiedBy
+    @Column(nullable = false, length = 50)
+    private String updateBy;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @LastModifiedDate
+    @Column(nullable = false)
+    private LocalDateTime updateAt;
 
     protected Comment() {}
 

@@ -1,26 +1,23 @@
 package com.board.board_java.controller;
 
 import com.board.board_java.Service.ArticleService;
+import com.board.board_java.domain.Article;
 import com.board.board_java.domain.type.SearchType;
 import com.board.board_java.dto.Article.ArticleDetailDto;
 import com.board.board_java.dto.Article.ArticleDto;
-
+import com.board.board_java.dto.Article.ArticleWriteDto;
+import com.board.board_java.dto.Security.LoginMemberDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
-import org.apache.commons.lang3.builder.ToStringSummary;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -53,16 +50,20 @@ public class ArticleController {
         return article;
     }
 
-//    @PostMapping()
-//    public ArticleWithCommentsDto article(@PathVariable Long id) {
-//        var article = articleService.getArticle(id);
-//
-//        return article;
-//    }
+    @PostMapping(produces = "application/json")
+    public ArticleDetailDto saveArticle(@AuthenticationPrincipal LoginMemberDto loginMemberDto, ArticleWriteDto articleWriteDto) {
+        return articleService.saveArticle(articleWriteDto, loginMemberDto);
+    }
 
-    @DeleteMapping("/{id}")
-    public void deleteArticle(@PathVariable Long id) {
+    @PutMapping(value = "/{articleId}", produces = "application/json")
+    public ArticleDetailDto updateArticle(@PathVariable Long articleId, @AuthenticationPrincipal LoginMemberDto loginMemberDto, ArticleWriteDto articleWriteDto
+    ) {
+        return articleService.updateArticle(articleId, articleWriteDto, loginMemberDto);
+    }
 
-        articleService.deleteArticle(id);
+    @DeleteMapping("/{articleId}")
+    public void deleteArticle(@PathVariable Long articleId, @AuthenticationPrincipal LoginMemberDto loginMemberDto) {
+
+        articleService.deleteArticle(articleId, loginMemberDto);
     }
 }

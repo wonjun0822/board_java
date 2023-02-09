@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -40,6 +39,7 @@ public class SwaggerConfig {
                 .info(info)
                 .addSecurityItem(securityRequirement)
                 .components(components)
-                .addServersItem(new Server().url("/"));
+                //.servers(List.of(new Server().url("http://localhost:8080"), new Server().url("https://www.wonjun.site"))); //Server Url 리스트로 추가하는 방법 
+                .addServersItem(new Server().url("/")); // Url을 / 로 설정 시 해당 접속 Url로 요청되는것으로 확인됨
     }
 }

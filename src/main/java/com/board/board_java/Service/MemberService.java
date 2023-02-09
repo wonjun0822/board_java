@@ -1,7 +1,7 @@
 package com.board.board_java.Service;
 
-//import com.board.board_java.Jwt.JwtTokenProvider;
 import com.board.board_java.Jwt.JwtTokenProvider;
+import com.board.board_java.domain.Member;
 import com.board.board_java.dto.Jwt.JwtDTO;
 import com.board.board_java.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -31,7 +30,7 @@ public class MemberService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        JwtDTO tokenInfo = jwtTokenProvider.generateToken(authentication);
+        JwtDTO tokenInfo = jwtTokenProvider.createToken(authentication);
 
         return tokenInfo;
     }

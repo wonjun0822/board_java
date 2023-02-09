@@ -1,26 +1,23 @@
 package com.board.board_java.domain;
 
+import com.board.board_java.dto.Member.MemberDto;
 import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
 import java.util.Objects;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "memberId", unique = true),
         @Index(columnList = "email", unique = true),
         @Index(columnList = "nickname", unique = true)
 })
 @Entity
-public class Member implements UserDetails {
+public class Member {
     @Id
     @Setter @Column(nullable = false, length = 50) private String memberId;
     @Setter @Column(nullable = false, length = 20) private String pwd;
@@ -28,13 +25,6 @@ public class Member implements UserDetails {
     @Setter @Column(nullable = false, length = 20) private String nickname;
 
     protected Member() {}
-
-    //    @Override
-    //    public Collection<? extends GrantedAuthority> getAuthorities() {
-    //        return this.roles.stream()
-    //                .map(SimpleGrantedAuthority::new)
-    //                .collect(Collectors.toList());
-    //    }
 
     private Member(String memberId, String pwd, String email, String nickname) {
         this.memberId = memberId;
@@ -50,47 +40,12 @@ public class Member implements UserDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Member member)) return false;
-        return memberId == member.memberId;
+        if (!(o instanceof Member that)) return false;
+        return this.getMemberId() != null && this.getMemberId().equals(that.getMemberId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(memberId);
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return pwd;
-    }
-
-    @Override
-    public String getUsername() {
-        return memberId;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+        return Objects.hash(this.getMemberId());
     }
 }

@@ -1,9 +1,9 @@
 package com.board.board_java.dto.Article;
 
 import com.board.board_java.domain.Article;
-import com.board.board_java.dto.ArticleWithCommentsDto;
 import com.board.board_java.dto.Comment.CommentDto;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -17,10 +17,12 @@ public record ArticleDetailDto (
         String content,
         int viewCount,
         String hashTag,
+        String nickname,
+        LocalDateTime createAt,
         Set<CommentDto> commentDto
 ) {
-    public static ArticleDetailDto of (Long id, String title, String content, int viewCount, String hashTag, Set<CommentDto> commentDto) {
-        return new ArticleDetailDto (id, title, content, viewCount, hashTag, commentDto);
+    public static ArticleDetailDto of (Long id, String title, String content, int viewCount, String hashTag, String nickname, LocalDateTime createAt, Set<CommentDto> commentDto) {
+        return new ArticleDetailDto (id, title, content, viewCount, hashTag, nickname, createAt, commentDto);
     }
 
     public static ArticleDetailDto from (Article entity) {
@@ -30,6 +32,8 @@ public record ArticleDetailDto (
                 entity.getContent(),
                 entity.getViewCount(),
                 entity.getHashTag(),
+                entity.getMember().getNickname(),
+                entity.getCreateAt(),
                 entity.getArticleComments().stream()
                         .map(CommentDto::from)
                         .collect(Collectors.toCollection(LinkedHashSet::new))
