@@ -26,13 +26,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin' # jdk를 제공하는 vender사 이름 ex. zulu, adopt, microsoft
-
-      - uses: actions/checkout@v3
-      - run: touch ./src/main/resources/application.properties
-      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
-      - run: cat ./src/main/resources/application.properties
-
-# 그래들 캐싱 - 속도 향상 효과
+          
+      # 그래들 캐싱 - 속도 향상 효과
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -43,16 +38,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       
-      - name: make application.yaml
+      - name: make application.yml
         run: |
           cd ./src/main/resources
-          touch ./application.yaml
-          echo "${{ secrets.APPLICATION }}" > ./application.yaml
+          touch ./application.yml
+          echo "${{ secrets.APPLICATION }}" > ./application.yml
           
       - uses: actions/upload-artifact@v3
         with:
-          name: application.yaml
-          path: ./src/main/resources/application.yaml
+          name: application.yml
+          path: ./src/main/resources/application.yml
         
       - run: ls ./src/main/resources
       
