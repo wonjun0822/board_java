@@ -37,6 +37,16 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
+      - uses: actions/checkout@v2
+      - run: touch ./src/main/resources/application.yaml
+      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yaml
+      - uses: actions/upload-artifact@v2
+        with:
+          name: application.yaml
+          path: ./src/main/resources/application.yaml
+
+      - run: ls ./src/main/resources
       
       # gradlew 권한 추가
       - name: Grant Execute Permission For Gradlew
@@ -46,6 +56,11 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew clean build -x test
 
+      - name: Cleanup Gradle Cache
+        if: ${{ always() }}
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
         
       # github container Login
       - name: Login to ghcr
