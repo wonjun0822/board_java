@@ -44,8 +44,4 @@ springdoc:
     version: 1.0
 
 jwt:
-  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa # Token 암복호화 키
-
----
-
----
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
